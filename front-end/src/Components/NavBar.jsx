@@ -1,19 +1,32 @@
 import React from 'react'
-import { Paper, Link} from '@mui/material'
+import { Paper,Tabs,Tab} from '@mui/material'
+import { useState,useEffect } from 'react';
 
-export const NavBar = () => {
+export const NavBar = (props) => {
+    const [value, setValue] = useState(0);
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    useEffect(()=>{
+        props.tabValues(value);
+    })
     const menue = [{name:'Latest',link:'#'},{name:'Top',link:'#'},{name:'Transfers',link:'#'},{name:'Matches',link:'#'},{name:'Contact Us',link:'#'},{name:'About',link:'#'}];
   return (
     <>
         <Paper elevation={3} sx={{display:'flex', justifyContent:'center',alignItems:'center',flexDirection:{xs:'column',sm:'column',md:'row',lg:'row'}}} gutterBottom>
-            {menue.map((links)=>{
+        <Tabs
+        value={value}
+        onChange={handleChange}
+        aria-label="navigation bar"
+      >
+            {menue.map((links,idx)=>{
                 return (
-                    <Link href={links.link}  variant='body' sx={{margin:{md:'1rem 1rem'},textDecoration:'none'}}>
-                        {links.name}
-                    </Link>
+                    <Tab value={idx} label={links.name} />
                 )
             })}
+            </Tabs>
         </Paper>
+        
     </>
   )
 }

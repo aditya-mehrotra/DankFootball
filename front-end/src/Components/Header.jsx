@@ -11,8 +11,11 @@ import { Drawer } from "@mui/material";
 import { useState } from "react";
 import { NavBar } from "./NavBar";
 
-export const Header = () => {
+export const Header = (props) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const handleClick = (idx)=>{
+    props.tabValues(idx)
+  }
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -72,10 +75,10 @@ export const Header = () => {
                 color="secondary"
               >
                 <List>
-                  {['Latest','Top','Transfers','Matches','Contact Us','About'].map((item)=>{
+                  {['Latest','Top','Transfers','Matches','Contact Us','About'].map((item,idx)=>{
                     return(
-                      <ListItem disablePadding>
-                        <ListItemButton href="#">
+                      <ListItem id={idx} disablePadding>
+                        <ListItemButton href="#" onClick={()=>{handleClick(idx)}}>
                           < ListItemText primary={item} />
                         </ListItemButton>
                       </ListItem>
@@ -93,7 +96,7 @@ export const Header = () => {
           display: { xs: "none", sm: "none", md: "inline-block" },
         }}
       >
-        <NavBar />
+        <NavBar tabValues = {props.tabValues}/>
       </Box>
     </>
   );
