@@ -1,14 +1,18 @@
 import './App.css';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
-import { NavBar } from './Components/NavBar';
+import { Header } from './Components/Header';
+import { ThemeProvider } from '@emotion/react';
+import {theme} from './theme';
 
 
 function App() {
   return (
     <>
       <CssBaseline/>
-      <NavBar/>
+      <ThemeProvider theme={theme}>
+      <Header/>
+      </ThemeProvider>
       <Container>
       </Container>
     </>
