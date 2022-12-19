@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 import { Header } from './Components/Header';
 import { ThemeProvider } from '@emotion/react';
 import {theme} from './theme';
+import { DisplayCards } from './Components/DisplayCards';
 
 
 function App() {
@@ -12,9 +13,11 @@ function App() {
       <CssBaseline/>
       <ThemeProvider theme={theme}>
       <Header/>
-      </ThemeProvider>
-      <Container>
+      <Container >
+        <DisplayCards/>
+        <DisplayCards/>
       </Container>
+      </ThemeProvider>
     </>
   );
 }
