@@ -17,14 +17,15 @@ function App() {
   const tabValues = (val) => {
     settabSelected(val);
   };
+  const testCards = [{imageLink:'/',title:'abc',body:'derf'},{imageLink:'/',title:'def',body:'derf'},{imageLink:'/',title:'hij',body:'derf'},{imageLink:'/',title:'kl',body:'derf'}]
   return (
     <>
       <CssBaseline />
       <ThemeProvider theme={theme}>
         <Header tabValues={tabValues} />
         <Container>
-          {tabSelected === 0 && <LatestTab />}
-          {tabSelected === 1 && <TopTab />}
+          {tabSelected === 0 && <LatestTab Cards={testCards}/>}
+          {tabSelected === 1 && <TopTab Cards={testCards}/>}
           {tabSelected === 2 && <TransfersTab />}
           {tabSelected === 3 && <MatchesTab />}
           {tabSelected === 4 && <ContactUsTab />}

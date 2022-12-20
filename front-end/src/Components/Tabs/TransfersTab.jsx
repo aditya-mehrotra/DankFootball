@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const TransfersTab = () => {
+export const TransfersTab = (props) => {
   return (
     <div>TransfersTab</div>
   )
