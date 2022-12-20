@@ -8,11 +8,14 @@ import { DisplayCards } from './Components/DisplayCards';
 
 
 function App() {
+  const tabValues = (val)=>{
+    console.log(val);
+  }
   return (
     <>
       <CssBaseline/>
       <ThemeProvider theme={theme}>
-      <Header/>
+      <Header tabValues={tabValues}/>
       <Container >
         <DisplayCards/>
         <DisplayCards/>
