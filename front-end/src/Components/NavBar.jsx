@@ -6,10 +6,14 @@ export const NavBar = (props) => {
     const [value, setValue] = useState(0);
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        
     };
     useEffect(()=>{
         props.tabValues(value);
-    })
+    },[value])
+    useEffect(()=>{
+        setValue(props.newValue);
+    },[props.newValue])
     const menue = [{name:'Latest',link:'#'},{name:'Top',link:'#'},{name:'Transfers',link:'#'},{name:'Matches',link:'#'},{name:'Contact Us',link:'#'},{name:'About',link:'#'}];
   return (
     <>

@@ -13,8 +13,11 @@ import { NavBar } from "./NavBar";
 
 export const Header = (props) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [responsiveValue, setResponsiveValue] = useState(0)
   const handleClick = (idx)=>{
+    setResponsiveValue(idx);
     props.tabValues(idx)
+    
   }
   return (
     <>
@@ -78,7 +81,7 @@ export const Header = (props) => {
                   {['Latest','Top','Transfers','Matches','Contact Us','About'].map((item,idx)=>{
                     return(
                       <ListItem id={idx} disablePadding>
-                        <ListItemButton href="#" onClick={()=>{handleClick(idx)}}>
+                        <ListItemButton onClick={()=>{handleClick(idx)}}>
                           < ListItemText primary={item} />
                         </ListItemButton>
                       </ListItem>
@@ -96,7 +99,7 @@ export const Header = (props) => {
           display: { xs: "none", sm: "none", md: "inline-block" },
         }}
       >
-        <NavBar tabValues = {props.tabValues}/>
+        <NavBar tabValues = {props.tabValues} newValue = {responsiveValue}/>
       </Box>
     </>
   );
