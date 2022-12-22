@@ -19,6 +19,11 @@ import { NavBar } from "./NavBar";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
 import { InputBase } from "@mui/material";
+import { LoginSinupModal } from "./LoginSinupModal";
+
+
+
+
 export const Header = (props) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [responsiveValue, setResponsiveValue] = useState(0);
@@ -66,8 +71,13 @@ export const Header = (props) => {
       },
     },
   }));
+  const [openModal, setopenModal] = useState(0)
+  const handleLSM = ()=>{
+    setopenModal(1+openModal)
+  }
   return (
     <>
+    <LoginSinupModal open={openModal}/>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
@@ -112,7 +122,7 @@ export const Header = (props) => {
             <Box
               sx={{ display: { xs: "none", sm: "none", md: "inline-block" } }}
             >
-              <Button variant="outlined" color="secondary">
+              <Button variant="outlined" color="secondary" onClick={handleLSM}>
                 Login/Signup
               </Button>
             </Box>
@@ -155,7 +165,7 @@ export const Header = (props) => {
                   })}
                   <ListItem>
                     
-                    <Button variant="contained" sx={{margin:'0',textTransform:'none'}} color="primary">
+                    <Button variant="contained" sx={{margin:'0',textTransform:'none'}} color="primary" onClick={handleLSM}>
                       Login / SignUp
                     </Button>
                     
