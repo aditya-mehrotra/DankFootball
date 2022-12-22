@@ -12,8 +12,6 @@ export const DisplayCards = (props) => {
           <CustomCard card={card}/>
         </Grid>
           )
-          
-        
         })
         }
       </Grid>
