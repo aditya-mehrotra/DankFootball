@@ -21,9 +21,6 @@ import { styled, alpha } from "@mui/material/styles";
 import { InputBase } from "@mui/material";
 import { LoginSinupModal } from "./LoginSinupModal";
 
-
-
-
 export const Header = (props) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [responsiveValue, setResponsiveValue] = useState(0);
@@ -71,58 +68,43 @@ export const Header = (props) => {
       },
     },
   }));
-  const [openModal, setopenModal] = useState(0)
-  const handleLSM = ()=>{
-    setopenModal(1+openModal)
-  }
+  const [openModal, setopenModal] = useState(false);
+  const handleClose = () => {
+    setopenModal(false);
+  };
+  const handleOpen = () => {
+    setopenModal(true);
+  };
+
   return (
     <>
-    <LoginSinupModal open={openModal}/>
+      <LoginSinupModal open={openModal} close={handleClose} />
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <Box sx={{ flexGrow: 1,display:'inline-block' }}>
-              <Typography
-                variant="h6"
-                
-              >
-                Dank Football
-              </Typography>
+            <Box sx={{ flexGrow: 1, display: "inline-block" }}>
+              <Typography variant="h6">Dank Football</Typography>
             </Box>
-            {/* <Box
-              sx={{
-                display: {
-                  xs: "inline-block",
-                  sm: "inline-block",
-                  md: "none",
-                },
-                marginRight : '0.5rem'
-              }}
-            >
-              <Button variant="outlined" color="secondary">
-                SignUp
-              </Button>
-            </Box> */}
             <Box
               sx={{ display: { xs: "none", sm: "none", md: "inline-block" } }}
             >
               <SocialMedia color="secondary" />
             </Box>
-            <Box margin={'1rem '}>
+            <Box margin={"1rem "}>
               <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ "aria-label": "search" }}
+                />
+              </Search>
             </Box>
             <Box
               sx={{ display: { xs: "none", sm: "none", md: "inline-block" } }}
             >
-              <Button variant="outlined" color="secondary" onClick={handleLSM}>
+              <Button variant="outlined" color="secondary" onClick={handleOpen}>
                 Login/Signup
               </Button>
             </Box>
@@ -164,11 +146,14 @@ export const Header = (props) => {
                     );
                   })}
                   <ListItem>
-                    
-                    <Button variant="contained" sx={{margin:'0',textTransform:'none'}} color="primary" onClick={handleLSM}>
+                    <Button
+                      variant="contained"
+                      sx={{ margin: "0", textTransform: "none" }}
+                      color="primary"
+                      onClick={handleOpen}
+                    >
                       Login / SignUp
                     </Button>
-                    
                   </ListItem>
                 </List>
               </Drawer>
