@@ -119,7 +119,7 @@ export const Header = (props) => {
               </IconButton>
 
               <Drawer
-                anchor="top"
+                anchor="right"
                 open={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
                 color="secondary"
