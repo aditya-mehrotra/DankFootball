@@ -1,8 +1,9 @@
 import React from "react";
-import { Modal } from "@mui/material";
-import { useState, useEffect } from "react";
+import { IconButton, Modal } from "@mui/material";
+import { useState } from "react";
 import { Box } from "@mui/material";
 import { Typography, TextField, Button, Link, Grid } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
 export const LoginSinupModal = (props) => {
   const [displayLogin, setdisplayLogin] = useState(true);
@@ -23,17 +24,16 @@ export const LoginSinupModal = (props) => {
     boxShadow: 24,
     p: 4,
   };
-  const [openLSM, setopenLSM] = useState(false);
-  const handleClose = () => {
-    setopenLSM(false);
-  };
-  useEffect(() => {
-    setopenLSM(props.open);
-  }, [props.open]);
+  
   return (
     <>
-      <Modal open={openLSM} onClose={handleClose}>
+      <Modal open={props.open} onClose={props.close}>
         <Box sx={style}>
+          <Box sx={{display:'flex',justifyContent:'flex-end'}}>
+          <IconButton onClick={props.close}>
+            <CloseIcon/>
+          </IconButton>
+          </Box>
           {displayLogin && (
             <Box
               sx={{
