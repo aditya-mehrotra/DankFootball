@@ -37,7 +37,14 @@ export const LoginSinupModal = (props) => {
       body:JSON.stringify({email:loginEmail,password:loginPassword})
     })
     const body = await response.json();
-    if(body.msg)props.close();
+    if(body.authenticated){
+      props.close()
+      props.handleLoginHeader();
+      props.handleAvatarName(body.avatarName);
+    }
+    else{
+
+    }
   }
   const [signupFirstName, setSignupFirstName] = useState('')
   const [signupLastName, setSignupLastName] = useState('')
@@ -52,7 +59,7 @@ export const LoginSinupModal = (props) => {
       body:JSON.stringify({firstName:signupFirstName,lastName:signupLastName,email:signupEmail,password:signupPassword})
     })
     const body = await response.json();
-    if(body.msg)handleLogin();
+    if(body.signedup)handleLogin();
 
   }
 
