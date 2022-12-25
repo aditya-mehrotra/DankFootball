@@ -25,6 +25,40 @@ export const LoginSinupModal = (props) => {
     p: 4,
   };
   
+
+  const [loginEmail, setLoginEmail] = useState('')
+  const [loginPassword, setLoginPassword] = useState('')
+  const handleLoginSubmit = async()=>{
+    const response = await fetch('/api/login',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({email:loginEmail,password:loginPassword})
+    })
+    const body = await response.json();
+    if(body.msg)props.close();
+  }
+  const [signupFirstName, setSignupFirstName] = useState('')
+  const [signupLastName, setSignupLastName] = useState('')
+  const [signupEmail, setSignupEmail] = useState('')
+  const [signupPassword, setSignupPassword] = useState('')
+  const handleSignupSubmit = async()=>{
+    const response = await fetch('/api/signup',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({firstName:signupFirstName,lastName:signupLastName,email:signupEmail,password:signupPassword})
+    })
+    const body = await response.json();
+    if(body.msg)handleLogin();
+
+  }
+
+
+  
+
   return (
     <>
       <Modal open={props.open} onClose={props.close}>
@@ -35,7 +69,7 @@ export const LoginSinupModal = (props) => {
           </IconButton>
           </Box>
           {displayLogin && (
-            <Box
+            <Box component='form' action="/api/login" method="post"
               sx={{
                 width: 300,
                 mx: "auto", // margin left & right
@@ -63,14 +97,16 @@ export const LoginSinupModal = (props) => {
                 placeholder="johndoe@email.com"
                 // pass down to FormLabel as children
                 label="Email"
+                onChange={(e)=>{setLoginEmail(e.target.value)}}
               />
               <TextField
                 name="password"
                 type="password"
                 placeholder="password"
                 label="Password"
+                onChange={(e)=>{setLoginPassword(e.target.value)}}
               />
-              <Button
+              <Button onClick={handleLoginSubmit}
                 sx={{ mt: 1 /* margin top */ }}
                 variant="contained"
                 color="primary"
@@ -78,7 +114,6 @@ export const LoginSinupModal = (props) => {
                 Log in
               </Button>
               <Typography
-                endDecorator={<Link href="/sign-up">Sign up</Link>}
                 fontSize="sm"
                 sx={{ alignSelf: "center" }}
               >
@@ -97,6 +132,7 @@ export const LoginSinupModal = (props) => {
               //     flexDirection: 'column',
               //     alignItems: 'center',
               //   }}
+              
               sx={{
                 width: 300,
                 mx: "auto", // margin left & right
@@ -117,7 +153,7 @@ export const LoginSinupModal = (props) => {
               <Typography level="body2">Sign up to continue.</Typography>
                 </div>
               
-              <Box component="form" noValidate sx={{ mt: 0 }}>
+              <Box component="form" action="/api/signup" method="post" noValidate sx={{ mt: 0 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <TextField
@@ -127,6 +163,7 @@ export const LoginSinupModal = (props) => {
                       fullWidth
                       id="firstName"
                       label="First Name"
+                      onChange={(e)=>{setSignupFirstName(e.target.value)}}
                       autoFocus
                     />
                   </Grid>
@@ -137,6 +174,7 @@ export const LoginSinupModal = (props) => {
                       id="lastName"
                       label="Last Name"
                       name="lastName"
+                      onChange={(e)=>{setSignupLastName(e.target.value)}}
                       autoComplete="family-name"
                     />
                   </Grid>
@@ -147,6 +185,7 @@ export const LoginSinupModal = (props) => {
                       id="email"
                       label="Email Address"
                       name="email"
+                      onChange={(e)=>{setSignupEmail(e.target.value)}}
                       autoComplete="email"
                     />
                   </Grid>
@@ -158,11 +197,12 @@ export const LoginSinupModal = (props) => {
                       label="Password"
                       type="password"
                       id="password"
+                      onChange={(e)=>{setSignupPassword(e.target.value)}}
                       autoComplete="new-password"
                     />
                   </Grid>
                 </Grid>
-                <Button fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                <Button onClick={handleSignupSubmit} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                   Sign Up
                 </Button>
                 <Grid container justifyContent="center">

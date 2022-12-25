@@ -1,23 +1,15 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const initializeDB = require('./DB/db-config');
-const model = require('./DB/db-models');
+const connection = require('./DB/db-config');
+const authRouter = require('./Routes/authRoutes')
 
-const app = express();
-initializeDB(mongoose);
 const port = 5000;
+const app = express();
+
 
 app.use(express.static('../front-end/build/'))
-
-
-app.get('/',(req,res)=>{
-    res.sendFile('../front-end/build/index.html')
-})  
-
-app.get('/test',async(req,res)=>{
-    const user = new model.users({firstName:'Ak',lastName:'kh',email:'ab@gmf.com',hash:'abdkbp'})
-    const val = await user.save();
-})
+app.use(express.urlencoded({extended:false}))
+app.use(express.json())
+app.use('/api',authRouter)
 
 
 app.listen(port,()=>{
