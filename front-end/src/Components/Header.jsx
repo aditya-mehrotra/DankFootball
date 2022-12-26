@@ -17,12 +17,13 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { SocialMedia } from "./SocialMedia";
 import { Drawer } from "@mui/material";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import { NavBar } from "./NavBar";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
 import { InputBase } from "@mui/material";
 import { LoginSinupModal } from "./LoginSinupModal";
+import AuthContext from "../contexts";
 
 export const Header = (props) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -72,6 +73,7 @@ export const Header = (props) => {
     },
   }));
 
+  const auth = useContext(AuthContext);
   const [openModal, setopenModal] = useState(false);
   const handleClose = () => {
     setopenModal(false);
@@ -80,12 +82,12 @@ export const Header = (props) => {
     setopenModal(true);
   };
 
-  const [loggedIn, setLoggedIn] = useState(false);
+
   const handleLoginHeader = () => {
-    setLoggedIn(true);
+    auth.handleLogIn();
   };
   const handleLogoutHeader = () => {
-    setLoggedIn(false);
+    auth.handleLogOut();
     fetch('/api/logout',{
       method:'GET',
       headers:{
@@ -93,10 +95,7 @@ export const Header = (props) => {
       }
     })
   };
-  const [avatarName, setAvatarName] = useState("");
-  const handleAvatarName = (name) => {
-    setAvatarName(name);
-  };
+
   const [avatarMenue, setAvatarMenue] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const handleOpenAvatarMenue = (event) => {
@@ -112,9 +111,6 @@ export const Header = (props) => {
       <LoginSinupModal
         open={openModal}
         close={handleClose}
-        handleLoginHeader={handleLoginHeader}
-        handleLogoutHeader={handleLogoutHeader}
-        handleAvatarName={handleAvatarName}
       />
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
@@ -138,7 +134,7 @@ export const Header = (props) => {
                 />
               </Search>
             </Box>
-            {!loggedIn && (
+            {!auth.loggedIn && (
               <Box
                 sx={{ display: { xs: "none", sm: "none", md: "inline-block" } }}
               >
@@ -151,10 +147,10 @@ export const Header = (props) => {
                 </Button>
               </Box>
             )}
-            {loggedIn && (
+            {auth.loggedIn && (
               <>
                 <Box onClick={handleOpenAvatarMenue}>
-                  <Avatar>{avatarName}</Avatar>
+                  <Avatar>{auth.avatarName}</Avatar>
                 </Box>
                 <Menu
                   anchorEl={anchorEl}
@@ -213,7 +209,7 @@ export const Header = (props) => {
                       </ListItem>
                     );
                   })}
-                  {!loggedIn && (
+                  {!auth.loggedIn && (
                     <ListItem>
                       <Button
                         variant="contained"

@@ -21,15 +21,16 @@ router.get("/test", (req, res) => {
   res.end();
 });
 
-const isAuth =(req,res,next)=>{
+router.get('/isauth',(req,res)=>{
   if(req.isAuthenticated()){
-    return next();
+    res.json({authenticated:true,avatarName:req.user.firstName[0].toUpperCase()});
   }
-  res.json({msg:false})
-}
-
+  else{
+    res.json({authenticated:false});
+  }
+})
 router.post("/login", passport.authenticate('local',{failureRedirect:'/api/loginfailed'}),(req, res) => {
-  res.json({ authenticated: true, avatarName:req.user.firstName[0] });
+  res.json({ authenticated: true, avatarName:req.user.firstName[0].toUpperCase() });
 });
 router.post('/loginfailed',(req,res)=>{
   res.json({authenticated:false})

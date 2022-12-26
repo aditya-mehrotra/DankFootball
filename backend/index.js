@@ -15,7 +15,7 @@ const app = express();
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: MongoStore.create({mongoUrl:process.env.DB_CONNECTION,collectionName:'sessions'}),
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 
@@ -30,6 +30,14 @@ app.use(express.static('../front-end/build/'))
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 app.use('/api',authRouter)
+app.get('/',(req,res,next)=>{
+    if(!req.isAuthenticated()){
+        return next()
+    }
+    res.json({authenticated:true})
+},(req,res)=>{
+    res.json({authenticated:false})
+})
 
 
 app.listen(port,()=>{

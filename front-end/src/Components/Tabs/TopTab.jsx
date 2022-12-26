@@ -9,7 +9,7 @@ export const TopTab = (props) => {
         <CustomCard card={props.Cards[0]} />
         <DisplayCards
           cards={props.Cards.filter((ele, idx) => {
-            return idx != 0;
+            return idx !== 0;
           })}
         />
       </Box>
