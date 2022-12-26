@@ -4,6 +4,9 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import { Avatar, MenuItem, Menu, ListItemIcon } from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
 import {
   Button,
   List,
@@ -14,12 +17,13 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { SocialMedia } from "./SocialMedia";
 import { Drawer } from "@mui/material";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import { NavBar } from "./NavBar";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
 import { InputBase } from "@mui/material";
 import { LoginSinupModal } from "./LoginSinupModal";
+import AuthContext from "../contexts";
 
 export const Header = (props) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -68,6 +72,8 @@ export const Header = (props) => {
       },
     },
   }));
+
+  const auth = useContext(AuthContext);
   const [openModal, setopenModal] = useState(false);
   const handleClose = () => {
     setopenModal(false);
@@ -76,9 +82,36 @@ export const Header = (props) => {
     setopenModal(true);
   };
 
+
+  const handleLoginHeader = () => {
+    auth.handleLogIn();
+  };
+  const handleLogoutHeader = () => {
+    auth.handleLogOut();
+    fetch('/api/logout',{
+      method:'GET',
+      headers:{
+        'Content-Type':'application/json'
+      }
+    })
+  };
+
+  const [avatarMenue, setAvatarMenue] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleOpenAvatarMenue = (event) => {
+    setAvatarMenue(true);
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseAvatarMenue = () => {
+    setAvatarMenue(false);
+  };
+
   return (
     <>
-      <LoginSinupModal open={openModal} close={handleClose} />
+      <LoginSinupModal
+        open={openModal}
+        close={handleClose}
+      />
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
@@ -101,13 +134,44 @@ export const Header = (props) => {
                 />
               </Search>
             </Box>
-            <Box
-              sx={{ display: { xs: "none", sm: "none", md: "inline-block" } }}
-            >
-              <Button variant="outlined" color="secondary" onClick={handleOpen}>
-                Login/Signup
-              </Button>
-            </Box>
+            {!auth.loggedIn && (
+              <Box
+                sx={{ display: { xs: "none", sm: "none", md: "inline-block" } }}
+              >
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={handleOpen}
+                >
+                  Login/Signup
+                </Button>
+              </Box>
+            )}
+            {auth.loggedIn && (
+              <>
+                <Box onClick={handleOpenAvatarMenue}>
+                  <Avatar>{auth.avatarName}</Avatar>
+                </Box>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={avatarMenue}
+                  onClose={handleCloseAvatarMenue}
+                >
+                  <MenuItem onClick={()=>{handleCloseAvatarMenue()}}>
+                    <ListItemIcon>
+                      <AccountCircleIcon />
+                    </ListItemIcon>
+                    <ListItemText>Profile</ListItemText>
+                  </MenuItem>
+                  <MenuItem onClick={()=>{handleCloseAvatarMenue(); handleLogoutHeader()}}>
+                    <ListItemIcon>
+                      <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText>Logout</ListItemText>
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
 
             <Box>
               <IconButton
@@ -119,7 +183,7 @@ export const Header = (props) => {
               </IconButton>
 
               <Drawer
-                anchor="top"
+                anchor="right"
                 open={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
                 color="secondary"
@@ -145,16 +209,18 @@ export const Header = (props) => {
                       </ListItem>
                     );
                   })}
-                  <ListItem>
-                    <Button
-                      variant="contained"
-                      sx={{ margin: "0", textTransform: "none" }}
-                      color="primary"
-                      onClick={handleOpen}
-                    >
-                      Login / SignUp
-                    </Button>
-                  </ListItem>
+                  {!auth.loggedIn && (
+                    <ListItem>
+                      <Button
+                        variant="contained"
+                        sx={{ margin: "0", textTransform: "none" }}
+                        color="primary"
+                        onClick={handleOpen}
+                      >
+                        Login / SignUp
+                      </Button>
+                    </ListItem>
+                  )}
                 </List>
               </Drawer>
             </Box>

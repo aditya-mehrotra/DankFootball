@@ -11,8 +11,32 @@ import { TransfersTab } from "./Components/Tabs/TransfersTab";
 import { MatchesTab } from "./Components/Tabs/MatchesTab";
 import { ContactUsTab } from "./Components/Tabs/ContactUsTab";
 import { AboutTab } from "./Components/Tabs/AboutTab";
+import AuthContext from "./contexts";
+
 
 function App() {
+
+  const [loggedIn, setLoggedIn] = useState(false)
+  const [avatarName,setAvatarName] = useState('');
+
+  const handleLogIn = (name)=>{
+    setLoggedIn(true);
+    setAvatarName(name)
+  }
+  const handleLogOut = ()=>{
+    setLoggedIn(false);
+  }
+
+  fetch('/api/isauth')
+    .then(res=>res.json()).then((body)=>{
+      if(body.authenticated){
+        handleLogIn(body.avatarName)
+      }
+      else{
+        handleLogOut()
+      }
+    })
+  
   const [tabSelected, settabSelected] = useState(0);
   const tabValues = (val) => {
     settabSelected(val);
@@ -20,6 +44,7 @@ function App() {
   const testCards = [{imageLink:'/',title:'abc',body:'derf'},{imageLink:'/',title:'def',body:'derf'},{imageLink:'/',title:'hij',body:'derf'},{imageLink:'/',title:'kl',body:'derf'}]
   return (
     <>
+    <AuthContext.Provider value={{avatarName:avatarName,loggedIn:loggedIn,handleLogIn:handleLogIn,handleLogOut:handleLogOut}}>
       <CssBaseline />
       <ThemeProvider theme={theme}>
         <Header tabValues={tabValues} />
@@ -32,6 +57,7 @@ function App() {
           {tabSelected === 5 && <AboutTab />}
         </Container>
       </ThemeProvider>
+      </AuthContext.Provider>
     </>
   );
 }

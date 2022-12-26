@@ -1,0 +1,26 @@
+Aritcle: {
+	(objectId)
+	authorId:String,
+	imageLink:String,
+	title:String,
+	body:String,
+	date:Date,
+	upVotes:Number,
+	downVotes:Number
+}
+
+Comments:{
+	(objectId)
+	articleId:String,
+	date:Date,
+	userId:String
+}
+
+User:{
+	(ObjectId)
+	firstName:String,
+	lastName:String,
+	email:String,
+	hash:string
+}
+
