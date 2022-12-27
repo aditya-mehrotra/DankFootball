@@ -83,9 +83,7 @@ export const Header = (props) => {
   };
 
 
-  const handleLoginHeader = () => {
-    auth.handleLogIn();
-  };
+
   const handleLogoutHeader = () => {
     auth.handleLogOut();
     fetch('/api/logout',{

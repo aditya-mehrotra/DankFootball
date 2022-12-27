@@ -72,6 +72,8 @@ export const LoginSinupModal = (props) => {
     if(body.authenticated){
       props.close()
       auth.handleLogIn(body.avatarName)
+      setLoginEmail('');
+      setLoginPassword('')
     }
     else{
 
@@ -134,7 +136,13 @@ export const LoginSinupModal = (props) => {
       body:JSON.stringify({firstName:signupFirstName,lastName:signupLastName,email:signupEmail,password:signupPassword})
     })
     const body = await response.json();
-    if(body.signedup)handleLogin();
+    if(body.signedup){
+      handleLogin();
+      setSignupEmail('');
+      setSignupFirstName('');
+      setSignupLastName('')
+      setSignupPassword('')
+    }
 
   }
 
