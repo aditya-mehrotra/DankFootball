@@ -10,3 +10,5 @@ const isUnAuth = (req,res,next)=>{
     }
     res.json({authenticated:true})
 }
+
+module.exports = {isAuth,isUnAuth}

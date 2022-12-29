@@ -2,7 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Typography } from "@mui/material";
-import {Button} from "@mui/material";
+import { Button } from "@mui/material";
 export const WriteArticle = () => {
   return (
     <>
@@ -11,58 +11,38 @@ export const WriteArticle = () => {
           Write Your Own Article
         </Typography>
       </Box>
-      <Box>
-        <Box
-          sx={{
-            width: "40%",
-          }}
-        >
+      <Box component={'form'} action="/api/writearticle" method="POST" encType="multipart/form-data">
+        <Box marginTop={'0.5rem'}>
           <TextField
+            name="title"
             id="outlined-multiline-flexible"
             label="Title..."
             multiline
             maxRows={4}
-            //   sx={{margin:'1rem'}}
-            margin="normal"
             color="primary"
             fullWidth
           />
         </Box>
-        <Box
-          sx={{
-            width: "100%",
-          }}
-        >
+        <Box marginTop={'0.5rem'}>
           <TextField
             id="outlined-multiline-static "
+            name="body"
             label="Write Your Article Here..."
             multiline
             fullWidth
             rows={8}
-            //   defaultValue="Write Your Article Here..."
-            //   sx={{margin:'1rem'}}
-            margin="normal"
             color="primary"
           />
         </Box>
-        <Box
-          sx={{
-            width: "40%",
-          }}
-        >
-          <TextField
-            id="outlined-multiline-flexible"
-            label="Image Link"
-            multiline
-            maxRows={4}
-            //   sx={{margin:'1rem'}}
-            margin="normal"
-            color="primary"
-            fullWidth
-          />
+        <Box marginTop={'0.5rem'}>
+          <Button variant="contained" component="label">
+            Upload An Image:&ensp;
+            <input type="file" name="articleImage" accept="image/*"/>
+          </Button>
+          
         </Box>
-        <Box sx={{JustifyContent: 'flex-end'}}>
-          <Button variant="contained" color="primary" >
+        <Box marginTop={'0.5rem'}>
+          <Button variant="contained" color="primary" type="submit">
             Publish
           </Button>
         </Box>

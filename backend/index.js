@@ -5,6 +5,7 @@ const passport = require('passport');
 const authRouter = require('./Routes/authRoutes')
 
 const MongoStore = require('connect-mongo');
+const fileUpload = require('express-fileupload');
 
 
 require('dotenv').config();
@@ -25,6 +26,8 @@ app.use(session({
 require('./Auth/passport-config');
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(fileUpload())
 
 app.use(express.static('../front-end/build/'))
 app.use(express.urlencoded({extended:false}))

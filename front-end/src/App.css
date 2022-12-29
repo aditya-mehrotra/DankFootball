@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap'); 
+
 .App {
   text-align: center;
 }
@@ -27,7 +29,18 @@
 .App-link {
   color: #61dafb;
 }
-
+input[type="file"]::file-selector-button{
+  
+  display: none;
+}
+input[type="file"]{
+  font-family: 'Roboto';
+  
+  font-size: 15px;
+  padding:0;
+  margin:0;
+  text-transform: uppercase;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
