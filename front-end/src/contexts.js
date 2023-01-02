@@ -1,6 +1,4 @@
-import React from "react";
-import { useState,createContext } from "react";
+import { createContext } from 'react';
 
-const AuthContext = createContext();
-
-export default AuthContext;
+export const AuthContext = createContext();
+export const LoginModalContext = createContext();
