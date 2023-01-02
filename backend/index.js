@@ -33,14 +33,6 @@ app.use(express.static('../front-end/build/'))
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 app.use('/api',authRouter)
-app.get('/',(req,res,next)=>{
-    if(!req.isAuthenticated()){
-        return next()
-    }
-    res.json({authenticated:true})
-},(req,res)=>{
-    res.json({authenticated:false})
-})
 
 
 app.listen(port,()=>{

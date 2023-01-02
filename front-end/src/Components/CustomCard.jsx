@@ -10,24 +10,24 @@ export const CustomCard = (props)=> {
     
     <Card >
       <CardActionArea>
-        <CardMedia
+        {props.card.imageLink&&<CardMedia
           component="img"
           height="140"
           image={props.card.imageLink}
-          alt="green iguana"
-        />
+        />}
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {props.card.title}
+            {props.card.title && props.card.title.length>20?props.card.title.slice(0,20):props.card.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {props.card.body}
+            {props.card.body && props.card.body.length>40?props.card.body.slice(0,40):props.card.body}
+            ...
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
         <Button size="small" color="primary">
-          Share
+          View Article
         </Button>
       </CardActions>
     </Card>

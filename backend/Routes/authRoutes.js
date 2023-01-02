@@ -25,9 +25,13 @@ router.get('/test', (req, res) => {
 	console.log(req.session.passport);
 });
 router.post('/writearticle', isAuth, (req, res) => {
-	let articleImage = req.files.articleImage;
+	
+	let pathLink = '';
 	const id = new mongoose.mongo.ObjectId();
-	articleImage.mv(
+	if(req.files && req.files.articleImage.mimetype.startsWith('image/')){
+		let articleImage = req.files.articleImage;
+		
+		articleImage.mv(
 		path.join(__dirname, '../uploads/articles', id + articleImage.name),
 		(err) => {
 			if (err) {
@@ -36,10 +40,14 @@ router.post('/writearticle', isAuth, (req, res) => {
 		}
 	);
 
+	pathLink = `/api/uploads/articles?id=${id}${articleImage.name}`;
+	}
+	
+
 	const article = new Articles({
 		_id: id,
 		authorId: req.session.passport.user,
-		imageLink: `/api/uploads/articles?id=${id}${articleImage.name}`,
+		imageLink: pathLink,
 		title: req.body.title,
 		body: req.body.body,
 		date: new Date(),

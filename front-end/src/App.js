@@ -44,7 +44,6 @@ function App() {
 				return res.json();
 			})
 			.then((body) => {
-				console.log(body);
 				if (body.authenticated) {
 					handleLogIn(body.avatarName);
 				} else {
