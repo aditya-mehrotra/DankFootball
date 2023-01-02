@@ -11,6 +11,7 @@ const articles = new schema({
 })
 const comments = new schema({
     articleId:String,
+    body:String,
     date:Date,
     userId:String
 })

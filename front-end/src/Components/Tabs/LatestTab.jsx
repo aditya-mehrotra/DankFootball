@@ -1,35 +1,39 @@
-import React from "react";
-import { CustomCard } from "../CustomCard";
-import { DisplayCards } from "../DisplayCards";
-import { Box } from "@mui/system";
-import { useState , useEffect} from "react";
+import React from 'react';
+import { CustomCard } from '../CustomCard';
+import { DisplayCards } from '../DisplayCards';
+import { Box } from '@mui/system';
+import { useState, useEffect } from 'react';
 export const LatestTab = (props) => {
-const [Cards, setCards] = useState([])
+	const [Cards, setCards] = useState([]);
 
-useEffect(() => {
-  fetch('/api/latest',{
-    method:'GET',
-    header:{
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    }
-  }).then((res)=>{
-    return res.json()
-  }).then((body)=>{
-    setCards(body);
-  })  
-}, [])
+	useEffect(() => {
+		fetch('/api/latest', {
+			method: 'GET',
+			header: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+			},
+		})
+			.then((res) => {
+				return res.json();
+			})
+			.then((body) => {
+				setCards(body);
+			});
+	}, []);
 
-  return (
-    <>
-      <Box sx={{ margin: "1rem" }}>
-        {Cards.length!==0&&<CustomCard card={Cards[0]} />}
-        <DisplayCards
-          cards={Cards.filter((ele, idx) => {
-            return idx !== 0;
-          })}
-        />
-      </Box>
-    </>
-  );
+	return (
+		<>
+			{Cards.length !== 0 && (
+				<Box sx={{ margin: '1rem' }}>
+					<CustomCard card={Cards[0]} />
+					<DisplayCards
+						cards={Cards.filter((ele, idx) => {
+							return idx !== 0;
+						})}
+					/>
+				</Box>
+			)}
+		</>
+	);
 };

@@ -3,6 +3,7 @@ const session = require('express-session');
 const connection = require('./DB/db-config');
 const passport = require('passport');
 const authRouter = require('./Routes/authRoutes')
+const router = require('./Routes/routes')
 
 const MongoStore = require('connect-mongo');
 const fileUpload = require('express-fileupload');
@@ -33,6 +34,7 @@ app.use(express.static('../front-end/build/'))
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 app.use('/api',authRouter)
+app.use('/api',router)
 
 
 app.listen(port,()=>{
