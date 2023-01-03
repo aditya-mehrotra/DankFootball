@@ -5,6 +5,7 @@ const passport = require('passport');
 const genPassword = require('../lib/passwordUtils').genPassword;
 const Users = require('../DB/db-models').users;
 const Articles = require('../DB/db-models').articles;
+const Comments = require('../DB/db-models').comments;
 const isAuth = require('./authenticated').isAuth;
 const path = require('path');
 
@@ -25,9 +26,13 @@ router.get('/test', (req, res) => {
 	console.log(req.session.passport);
 });
 router.post('/writearticle', isAuth, (req, res) => {
-	let articleImage = req.files.articleImage;
+	
+	let pathLink = '';
 	const id = new mongoose.mongo.ObjectId();
-	articleImage.mv(
+	if(req.files && req.files.articleImage.mimetype.startsWith('image/')){
+		let articleImage = req.files.articleImage;
+		
+		articleImage.mv(
 		path.join(__dirname, '../uploads/articles', id + articleImage.name),
 		(err) => {
 			if (err) {
@@ -36,12 +41,16 @@ router.post('/writearticle', isAuth, (req, res) => {
 		}
 	);
 
+	pathLink = `/api/uploads/articles?id=${id}${articleImage.name}`;
+	}
+	
+
 	const article = new Articles({
 		_id: id,
 		authorId: req.session.passport.user,
-		imageLink: `/api/uploads/articles?id=${id}${articleImage.name}`,
-		title: req.body.title,
-		body: req.body.body,
+		imageLink: pathLink,
+		title: req.body.title || "",
+		body: req.body.body || "",
 		date: new Date(),
 		upVote: 0,
 		downVotes: 0,
@@ -56,9 +65,12 @@ router.get('/uploads/:catagory', (req, res) => {
 	);
 });
 
-router.get('/latest',async (req,res)=>{
-	const allArticles = await Articles.find();
-	res.json(allArticles);
+router.post('/article/comment',isAuth,(req,res)=>{
+	const comment = new Comments({body:req.body.body,date:new Date(),articleId:req.query.id,userId:req.session.passport.user})
+	comment.save();
+
+	res.json({success:true,authenticated:true});
+
 })
 
 router.get('/isauth', (req, res) => {

@@ -17,6 +17,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { RequiredAuth } from './Components/RequiredAuth';
 import { WriteArticle } from './Components/Tabs/WriteArticle';
 import { WriteButton } from './Components/WriteButton';
+import { ProfilePage } from './Components/Tabs/ProfilePage';
+import { DisplayArticle } from './Components/Tabs/DisplayArticle';
 
 function App() {
 	const [loggedIn, setLoggedIn] = useState(undefined);
@@ -44,7 +46,6 @@ function App() {
 				return res.json();
 			})
 			.then((body) => {
-				console.log(body);
 				if (body.authenticated) {
 					handleLogIn(body.avatarName);
 				} else {
@@ -57,7 +58,7 @@ function App() {
 	const tabValues = (val) => {
 		settabSelected(val);
 	};
-	
+
 	return (
 		<>
 			<AuthContext.Provider
@@ -85,7 +86,7 @@ function App() {
 									element={
 										<>
 											<Container>
-												{tabSelected === 0 && <LatestTab  />}
+												{tabSelected === 0 && <LatestTab />}
 												{tabSelected === 1 && <TopTab />}
 												{tabSelected === 2 && <TransfersTab />}
 												{tabSelected === 3 && <MatchesTab />}
@@ -97,13 +98,31 @@ function App() {
 									}
 								/>
 								<Route
-									path='writearticle'
+									path='/writearticle'
 									element={
 										<RequiredAuth>
 											<Container>
 												<WriteArticle />
 											</Container>
 										</RequiredAuth>
+									}
+								/>
+								<Route
+									path='/myprofile'
+									element={
+										<RequiredAuth>
+											<Container>
+												<ProfilePage />
+											</Container>
+										</RequiredAuth>
+									}
+								/>
+								<Route
+									path='/article/:articleId'
+									element={
+										<Container>
+											<DisplayArticle />
+										</Container>
 									}
 								/>
 							</Routes>
