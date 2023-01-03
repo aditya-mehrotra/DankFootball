@@ -1,4 +1,4 @@
-import { Grid, Button, Stack, Paper} from '@mui/material';
+import { Grid, Button, Stack, Chip , Avatar,Divider} from '@mui/material';
 import React from 'react';
 import { Box } from '@mui/material';
 import { Typography } from '@mui/material';
@@ -7,8 +7,13 @@ import { TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import { CustomCard } from '../CustomCard';
+import { useContext } from 'react';
+import { LoginModalContext } from '../../contexts';
 
 export const DisplayArticle = () => {
+	const [stateToggler, setStateToggler] = useState(false)
+	const openModal = useContext(LoginModalContext);
+	const [commentBody, setCommentBody] = useState('')
   let { articleId } = useParams();
 	const [pageData, setPageData] = useState({
 		article: { title: 'test', body: 'testBody' },
@@ -47,7 +52,28 @@ export const DisplayArticle = () => {
       if(cards.length>3)finalSetofCards = cards.slice(0,3);
       setlatestSideBar(finalSetofCards);
     })
-	}, [articleId]);
+	}, [articleId,stateToggler]);
+
+
+	const handleSendComment = ()=>{
+		fetch(`/api/article/comment?id=${articleId}`,{
+			method:'POST',
+			headers:{
+				'Content-Type': 'application/json'
+			},
+			body:JSON.stringify({body:commentBody})
+		}).then((res)=>{
+			return res.json();
+		}).then((body)=>{
+			if(!body.authenticated){
+				openModal.handleOpenLoginModal();
+			}
+			if(body.success){
+				setCommentBody('');
+				setStateToggler(!stateToggler);
+			}
+		})
+	}
 
 	return (
 		<>
@@ -83,8 +109,10 @@ export const DisplayArticle = () => {
 							label='Leave a Comment...'
 							multiline
 							fullWidth
+							value={commentBody}
+							onChange={(e)=>{setCommentBody(e.target.value)}}
 						/>
-						<Button variant='contained' color='primary'>
+						<Button variant='contained' color='primary' onClick={handleSendComment}>
 							<SendRoundedIcon />
 						</Button>
 					</Box>
@@ -92,10 +120,11 @@ export const DisplayArticle = () => {
 						<Stack spacing={1}>
 							{pageData.comments.map((comment) => {
 								return (
-									<Paper sx={{padding:'0.5rem'}}>
-										<Typography variant='h6' color='primary'>{comment.user}</Typography>
+									<Box sx={{padding:'0.5rem'}}>
+										<Chip  label={comment.user} variant="filled" color='primary'/>
 										<Typography variant='body2' color='primary'>{comment.body}</Typography>
-									</Paper>
+										<Divider/>
+									</Box>
 								);
 							})}
 						</Stack>

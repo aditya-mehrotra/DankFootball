@@ -5,6 +5,7 @@ const passport = require('passport');
 const genPassword = require('../lib/passwordUtils').genPassword;
 const Users = require('../DB/db-models').users;
 const Articles = require('../DB/db-models').articles;
+const Comments = require('../DB/db-models').comments;
 const isAuth = require('./authenticated').isAuth;
 const path = require('path');
 
@@ -48,8 +49,8 @@ router.post('/writearticle', isAuth, (req, res) => {
 		_id: id,
 		authorId: req.session.passport.user,
 		imageLink: pathLink,
-		title: req.body.title,
-		body: req.body.body,
+		title: req.body.title || "",
+		body: req.body.body || "",
 		date: new Date(),
 		upVote: 0,
 		downVotes: 0,
@@ -64,9 +65,12 @@ router.get('/uploads/:catagory', (req, res) => {
 	);
 });
 
-router.get('/latest',async (req,res)=>{
-	const allArticles = await Articles.find();
-	res.json(allArticles);
+router.post('/article/comment',isAuth,(req,res)=>{
+	const comment = new Comments({body:req.body.body,date:new Date(),articleId:req.query.id,userId:req.session.passport.user})
+	comment.save();
+
+	res.json({success:true,authenticated:true});
+
 })
 
 router.get('/isauth', (req, res) => {
