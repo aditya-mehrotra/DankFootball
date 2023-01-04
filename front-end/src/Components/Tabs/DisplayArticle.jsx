@@ -16,11 +16,8 @@ export const DisplayArticle = () => {
 	const [commentBody, setCommentBody] = useState('');
 	let { articleId } = useParams();
 	const [pageData, setPageData] = useState({
-		article: { title: 'test', body: 'testBody' },
-		comments: [
-			{ user: 'ankit', body: 'testComment' },
-			{ user: 'ankit', body: 'testComment' },
-		],
+		article: { title: '', body: '' },
+		comments: []
 	});
 	const [latestSideBar, setlatestSideBar] = useState([]);
 	useEffect(() => {
@@ -35,7 +32,6 @@ export const DisplayArticle = () => {
 				return res.json();
 			})
 			.then((body) => {
-				console.log(body);
 				setPageData(body);
 			});
 

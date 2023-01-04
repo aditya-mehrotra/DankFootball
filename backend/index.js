@@ -4,6 +4,7 @@ const connection = require('./DB/db-config');
 const passport = require('passport');
 const authRouter = require('./Routes/authRoutes');
 const router = require('./Routes/routes');
+const path = require('path');
 
 const MongoStore = require('connect-mongo');
 const fileUpload = require('express-fileupload');
@@ -38,6 +39,9 @@ app.use(express.static('../front-end/build/'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+app.get(/^(?!\/api).+/,(req,res)=>{
+	res.sendFile(path.join(__dirname,'../front-end/build/index.html'))
+})
 app.use('/api', authRouter);
 app.use('/api', router);
 
