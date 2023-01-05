@@ -1,4 +1,4 @@
-import { Grid, Button, Stack, Chip , Avatar,Divider} from '@mui/material';
+import { Grid, Button, Stack, Chip, Avatar, Divider } from '@mui/material';
 import React from 'react';
 import { Box } from '@mui/material';
 import { Typography } from '@mui/material';
@@ -11,15 +11,15 @@ import { useContext } from 'react';
 import { LoginModalContext } from '../../contexts';
 
 export const DisplayArticle = () => {
-	const [stateToggler, setStateToggler] = useState(false)
+	const [stateToggler, setStateToggler] = useState(false);
 	const openModal = useContext(LoginModalContext);
-	const [commentBody, setCommentBody] = useState('')
-  let { articleId } = useParams();
+	const [commentBody, setCommentBody] = useState('');
+	let { articleId } = useParams();
 	const [pageData, setPageData] = useState({
-		article: { title: 'test', body: 'testBody' },
-		comments: [{user:'ankit',body:'testComment'},{user:'ankit',body:'testComment'}],
+		article: { title: '', body: '' },
+		comments: []
 	});
-  const [latestSideBar, setlatestSideBar] = useState([])
+	const [latestSideBar, setlatestSideBar] = useState([]);
 	useEffect(() => {
 		fetch(`/api/article?id=${articleId}`, {
 			method: 'GET',
@@ -32,48 +32,50 @@ export const DisplayArticle = () => {
 				return res.json();
 			})
 			.then((body) => {
-				console.log(body);
 				setPageData(body);
 			});
 
-    fetch('/api/latest',{
+		fetch('/api/latest', {
 			method: 'GET',
 			header: {
 				'Content-Type': 'application/json',
 				Accept: 'application/json',
 			},
-		}).then((res)=>{
-      return res.json();
-    }).then((body)=>{
-      let cards = body.filter((card)=>{
-        return card._id!= articleId
-      })
-      let finalSetofCards = cards
-      if(cards.length>3)finalSetofCards = cards.slice(0,3);
-      setlatestSideBar(finalSetofCards);
-    })
-	}, [articleId,stateToggler]);
-
-
-	const handleSendComment = ()=>{
-		fetch(`/api/article/comment?id=${articleId}`,{
-			method:'POST',
-			headers:{
-				'Content-Type': 'application/json'
-			},
-			body:JSON.stringify({body:commentBody})
-		}).then((res)=>{
-			return res.json();
-		}).then((body)=>{
-			if(!body.authenticated){
-				openModal.handleOpenLoginModal();
-			}
-			if(body.success){
-				setCommentBody('');
-				setStateToggler(!stateToggler);
-			}
 		})
-	}
+			.then((res) => {
+				return res.json();
+			})
+			.then((body) => {
+				let cards = body.filter((card) => {
+					return card._id != articleId;
+				});
+				let finalSetofCards = cards;
+				if (cards.length > 3) finalSetofCards = cards.slice(0, 3);
+				setlatestSideBar(finalSetofCards);
+			});
+	}, [articleId, stateToggler]);
+
+	const handleSendComment = () => {
+		fetch(`/api/article/comment?id=${articleId}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ body: commentBody }),
+		})
+			.then((res) => {
+				return res.json();
+			})
+			.then((body) => {
+				if (!body.authenticated) {
+					openModal.handleOpenLoginModal();
+				}
+				if (body.success) {
+					setCommentBody('');
+					setStateToggler(!stateToggler);
+				}
+			});
+	};
 
 	return (
 		<>
@@ -84,7 +86,7 @@ export const DisplayArticle = () => {
 							{pageData.article.title}
 						</Typography>
 					</Box>
-					<CustomCard card={{imageLink:pageData.article.imageLink}}/>
+					<CustomCard card={{ imageLink: pageData.article.imageLink }} />
 					<Box sx={{ margin: '1rem' }}>
 						<Typography variant='body1' color='primary'>
 							{pageData.article.body}
@@ -110,24 +112,53 @@ export const DisplayArticle = () => {
 							multiline
 							fullWidth
 							value={commentBody}
-							onChange={(e)=>{setCommentBody(e.target.value)}}
+							onChange={(e) => {
+								setCommentBody(e.target.value);
+							}}
 						/>
-						<Button variant='contained' color='primary' onClick={handleSendComment}>
+						<Button
+							variant='contained'
+							color='primary'
+							onClick={handleSendComment}
+						>
 							<SendRoundedIcon />
 						</Button>
 					</Box>
 					<Box sx={{ margin: '1rem' }}>
-						<Stack spacing={1}>
+						<Box>
 							{pageData.comments.map((comment) => {
 								return (
-									<Box sx={{padding:'0.5rem'}}>
-										<Chip  label={comment.user} variant="filled" color='primary'/>
-										<Typography variant='body2' color='primary'>{comment.body}</Typography>
-										<Divider/>
-									</Box>
+									
+									<>
+
+										<Grid container wrap='nowrap' spacing={2}>
+											<Grid item>
+												<Avatar>{comment.user[0].toUpperCase()}</Avatar>
+											</Grid>
+											<Grid justifyContent='left' item xs zeroMinWidth>
+												<Typography
+													variant='h6'
+													sx={{
+														margin: 0,
+														textAlign: 'left',
+														fontWeight: 'bold',
+													}}
+												>
+													{comment.user}
+												</Typography>
+												<Typography variant='body1' sx={{ textAlign: 'left' }}>
+													{comment.body}
+												</Typography>
+												<Typography variant='body2' sx={{ textAlign: 'left', marginTop:'10px' }}>
+													posted {comment.date} ago.
+												</Typography>
+											</Grid>
+										</Grid>
+										<Divider variant='fullWidth' sx={{ margin: '30px 0' }} />
+									</>
 								);
 							})}
-						</Stack>
+						</Box>
 					</Box>
 				</Grid>
 				<Grid item xs={0} sm={0} md={3}>
@@ -141,12 +172,10 @@ export const DisplayArticle = () => {
 							Latest
 						</Typography>
 						<Stack spacing={2}>
-              {latestSideBar.map((latest)=>{
-                return(
-                  <CustomCard card = {latest}/>
-                )
-              })}
-            </Stack>
+							{latestSideBar.map((latest) => {
+								return <CustomCard card={latest} />;
+							})}
+						</Stack>
 					</Box>
 				</Grid>
 			</Grid>

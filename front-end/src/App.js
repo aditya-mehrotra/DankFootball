@@ -21,7 +21,7 @@ import { ProfilePage } from './Components/Tabs/ProfilePage';
 import { DisplayArticle } from './Components/Tabs/DisplayArticle';
 
 function App() {
-	const [loggedIn, setLoggedIn] = useState(undefined);
+	const [loggedIn, setLoggedIn] = useState(true);
 	const [openLoginModal, setOpenLoginModal] = useState(false);
 	const [avatarName, setAvatarName] = useState('');
 

@@ -7,7 +7,8 @@ import { LoginModalContext } from '../contexts';
 export const RequiredAuth = ({ children }) => {
 	const auth = useContext(AuthContext);
 	const openLoginModal = useContext(LoginModalContext);
-	if (!auth.loggedIn) {
+	if (auth.loggedIn===false) {
+		
 		openLoginModal.handleOpenLoginModal();
 		return <Navigate to='/' />;
 	}
