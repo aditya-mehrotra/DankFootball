@@ -19,6 +19,14 @@ const users = new schema({
     firstName:String,
     lastName:String,
     email:String,
-    hash:String
+    hash:String,
+    about:{
+        type:String,
+        default:''
+    },
+    profileImage:{
+        type:String,
+        default:''
+    }
 })
 module.exports = {articles:articles,comments:comments,users:users};
