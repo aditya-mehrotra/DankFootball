@@ -3,7 +3,7 @@ import { CustomCard } from '../CustomCard';
 import { DisplayCards } from '../DisplayCards';
 import { Box } from '@mui/system';
 import { useState, useEffect } from 'react';
-export const LatestTab = (props) => {
+export const Home = () => {
 	const [Cards, setCards] = useState([]);
 
 	useEffect(() => {

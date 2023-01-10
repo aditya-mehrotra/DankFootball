@@ -11,9 +11,11 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import { EditProfileModal } from '../EditProfileModal';
 import { useState,useEffect } from 'react';
+import { DisplayCards } from '../DisplayCards';
 
 export const ProfilePage = () => {
 
+	const [userArticles,setUserArticles] = useState([]);
 	const [openEditModal, setOpenEditModal] = useState(false);
 	const [userInfo, setUserInfo] = useState({name:'',profileImage:'',about:''})
 	const handleOpenEditModal = ()=>{
@@ -32,6 +34,17 @@ export const ProfilePage = () => {
 			return res.json();
 		}).then((body)=>{
 			setUserInfo(body)
+		})
+
+		fetch('/api/userarticles',{
+			method:'GET',
+			headers:{
+				'Content-Type':'application/json',
+			}
+		}).then((res)=>{
+			return res.json();
+		}).then((body)=>{
+			setUserArticles(body);
 		})
 	}, [])
 	
@@ -111,6 +124,10 @@ export const ProfilePage = () => {
 					</Grid>
 				</Grid>
 			</Paper>
+			<Box>
+				<Typography variant='h4' fontWeight='bold'>My Articles</Typography>
+				<DisplayCards cards={userArticles}/>
+			</Box>
 		</>
 	);
 };

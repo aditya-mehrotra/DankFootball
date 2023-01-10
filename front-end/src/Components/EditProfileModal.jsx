@@ -70,7 +70,6 @@ export const EditProfileModal = (props) => {
 							sx={{ alignSelf: 'flex-end' }}
 							color='primary'
 							type='submit'
-							onClick={()=>{props.modal.handleCloseEditModal();}}
 						>
 							Save Changes
 						</Button>

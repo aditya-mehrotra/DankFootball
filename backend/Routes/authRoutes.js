@@ -80,7 +80,7 @@ router.post('/editprofile', isAuth, async(req, res) => {
 		pathLink = `/api/uploads/profile?id=${req.user._id}${profileImage.name}`;
 	}
 		const user = await Users.findById(req.user._id);
-		user.about = req.body.about;
+		user.about = req.body.about||user.about;
 		user.profileImage = pathLink||user.profileImage;
 		user.firstName = req.body.firstName||user.firstName;
 		user.lastName = req.body.lastName||user.lastName;
@@ -106,6 +106,10 @@ router.post('/article/comment', isAuth, (req, res) => {
 
 	res.json({ success: true, authenticated: true });
 });
+router.get('/userarticles',isAuth,async(req,res)=>{
+	const articles = await Articles.find({authorId:req.session.passport.user});
+	res.json(articles);
+})
 
 router.get('/isauth', (req, res) => {
 	if (req.isAuthenticated()) {

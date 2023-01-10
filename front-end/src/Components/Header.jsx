@@ -3,36 +3,20 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import { Avatar, MenuItem, Menu, ListItemIcon } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
-import {
-	Button,
-	List,
-	ListItem,
-	ListItemButton,
-	ListItemText,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import { Button, ListItemText } from '@mui/material';
 import { SocialMedia } from './SocialMedia';
-import { Drawer } from '@mui/material';
 import { useState, useContext } from 'react';
-import { NavBar } from './NavBar';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import { InputBase } from '@mui/material';
 import { LoginSinupModal } from './LoginSinupModal';
 import { AuthContext, LoginModalContext } from '../contexts';
-import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-export const Header = (props) => {
-	const [drawerOpen, setDrawerOpen] = useState(false);
-	const [responsiveValue, setResponsiveValue] = useState(0);
-	const handleClick = (idx) => {
-		setResponsiveValue(idx);
-		props.tabValues(idx);
-	};
+export const Header = () => {
 	const Search = styled('div')(({ theme }) => ({
 		position: 'relative',
 		borderRadius: theme.shape.borderRadius,
@@ -74,8 +58,6 @@ export const Header = (props) => {
 		},
 	}));
 
-	let location = useLocation();
-
 	const auth = useContext(AuthContext);
 	const openLoginModal = useContext(LoginModalContext);
 
@@ -88,6 +70,10 @@ export const Header = (props) => {
 			},
 		});
 	};
+	const navigate = useNavigate();
+	const handleNavigate = ()=>{
+		navigate('/myprofile')
+	}
 
 	const [avatarMenue, setAvatarMenue] = useState(false);
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -105,7 +91,7 @@ export const Header = (props) => {
 			<Box sx={{ flexGrow: 1 }}>
 				<AppBar position='static'>
 					<Toolbar>
-						<Box sx={{ flexGrow: 1, display: 'inline-block' }}>
+						<Box onClick={()=>{navigate('/')}} sx={{ flexGrow: 1, display: 'inline-block' ,cursor:'pointer'}}>
 							<Typography variant='h6'>Dank Football</Typography>
 						</Box>
 						<Box
@@ -125,9 +111,7 @@ export const Header = (props) => {
 							</Search>
 						</Box>
 						{!auth.loggedIn && (
-							<Box
-								sx={{ display: { xs: 'none', sm: 'none', md: 'inline-block' } }}
-							>
+							<Box>
 								<Button
 									variant='contained'
 									color='secondary'
@@ -150,6 +134,7 @@ export const Header = (props) => {
 									<MenuItem
 										onClick={() => {
 											handleCloseAvatarMenue();
+											handleNavigate();
 										}}
 									>
 										<ListItemIcon>
@@ -171,70 +156,8 @@ export const Header = (props) => {
 								</Menu>
 							</>
 						)}
-
-						<Box>
-							<IconButton
-								color='secondary'
-								onClick={() => setDrawerOpen(true)}
-								sx={{ display: { md: 'none', lg: 'none', xl: 'none' } }}
-							>
-								<MenuIcon />
-							</IconButton>
-
-							<Drawer
-								anchor='right'
-								open={drawerOpen}
-								onClose={() => setDrawerOpen(false)}
-								color='secondary'
-							>
-								<List>
-									{[
-										'Latest',
-										'Top',
-										'Transfers',
-										'Matches',
-										'Contact Us',
-										'About',
-									].map((item, idx) => {
-										return (
-											<ListItem id={idx} disablePadding>
-												<ListItemButton
-													onClick={() => {
-														handleClick(idx);
-													}}
-												>
-													<ListItemText primary={item} />
-												</ListItemButton>
-											</ListItem>
-										);
-									})}
-									{!auth.loggedIn && (
-										<ListItem>
-											<Button
-												variant='outlined'
-												sx={{ margin: '0', textTransform: 'none' }}
-												color='primary'
-												onClick={openLoginModal.handleOpenLoginModal}
-											>
-												Login / SignUp
-											</Button>
-										</ListItem>
-									)}
-								</List>
-							</Drawer>
-						</Box>
 					</Toolbar>
 				</AppBar>
-			</Box>
-			<Box
-				sx={{
-					width: '100%',
-					display: { xs: 'none', sm: 'none', md: 'inline-block' },
-				}}
-			>
-				{location.pathname === '/' && (
-					<NavBar tabValues={props.tabValues} newValue={responsiveValue} />
-				)}
 			</Box>
 		</>
 	);
