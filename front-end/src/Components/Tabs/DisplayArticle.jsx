@@ -1,14 +1,15 @@
-import { Grid, Button, Stack, Chip, Avatar, Divider } from '@mui/material';
+import { Grid, Button, Stack, Chip, Avatar, Divider, Link } from '@mui/material';
 import React from 'react';
 import { Box } from '@mui/material';
 import { Typography } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import { CustomCard } from '../CustomCard';
 import { useContext } from 'react';
 import { LoginModalContext } from '../../contexts';
+import { useNavigate } from 'react-router-dom';
 
 export const DisplayArticle = () => {
 	const [stateToggler, setStateToggler] = useState(false);
@@ -76,6 +77,10 @@ export const DisplayArticle = () => {
 				}
 			});
 	};
+	const navigate = useNavigate()
+	const handleShowProfile = (userId) =>{
+		navigate(`/showprofile/${userId}`)
+	}
 
 	return (
 		<>
@@ -144,7 +149,7 @@ export const DisplayArticle = () => {
 														fontWeight: 'bold',
 													}}
 												>
-													{comment.user}
+													<Link sx={{ cursor: 'pointer' }} onClick={()=>{handleShowProfile(comment.userId)}}>{comment.user}</Link>
 												</Typography>
 												<Typography variant='body1' sx={{ textAlign: 'left' }}>
 													{comment.body}

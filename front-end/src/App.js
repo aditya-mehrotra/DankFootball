@@ -14,6 +14,7 @@ import { WriteArticle } from './Components/Tabs/WriteArticle';
 import { WriteButton } from './Components/WriteButton';
 import { ProfilePage } from './Components/Tabs/ProfilePage';
 import { DisplayArticle } from './Components/Tabs/DisplayArticle';
+import { ShowProfile } from './Components/Tabs/ShowProfile';
 
 function App() {
 	const [loggedIn, setLoggedIn] = useState(undefined);
@@ -107,6 +108,14 @@ function App() {
 									element={
 										<Container>
 											<DisplayArticle />
+										</Container>
+									}
+								/>
+								<Route
+									path='/showprofile/:userId'
+									element={
+										<Container>
+											<ShowProfile/>
 										</Container>
 									}
 								/>
