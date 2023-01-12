@@ -9,22 +9,8 @@ const Comments = require('../DB/db-models').comments;
 const isAuth = require('./authenticated').isAuth;
 const path = require('path');
 
-router.get('/test', (req, res) => {
-	/* Code for assigning object id to different parameters of the document */
-	/*
-	 */
-	// const id = new mongoose.mongo.ObjectId();
-	// const user = new model.users({
-	//   _id: id,
-	//   firstName: "abhi",
-	//   lastName: "khur",
-	//   email: "abhi@g",
-	//   hash: id,
-	// });
-	// user.save();
-	// res.end();
-	console.log(req.session.passport);
-});
+
+
 router.post('/writearticle', isAuth, (req, res) => {
 	let pathLink = '';
 	const id = new mongoose.mongo.ObjectId();

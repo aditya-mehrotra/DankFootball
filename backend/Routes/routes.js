@@ -25,7 +25,7 @@ router.get('/article',async(req,res)=>{
         else if(hours!==0)val = String(hours)+' hours';
         else val = String(mins)+' mins';
         let u = await User.findOne({_id:comments[i].userId})
-        c.push({user:u.firstName+' '+u.lastName,body:comments[i].body,date:val,sortDate:comments[i].date});
+        c.push({user:u.firstName+' '+u.lastName,body:comments[i].body,date:val,sortDate:comments[i].date,userId:comments[i].userId});
     }
     c.sort((a,b)=>{return b.sortDate-a.sortDate})
     res.json({article:article,comments:c})
@@ -35,6 +35,14 @@ router.get('/latest',async (req,res)=>{
 	const allArticles = await Article.find();
 	res.json(allArticles);
 })
-
+router.get('/userprofile/:userId',async (req,res)=>{
+    const user = await User.findOne({_id:req.params.userId});
+    const {firstName,lastName,profileImage,about} = user;
+	res.json({ name: firstName + ' ' + lastName, profileImage, about });
+})
+router.get('/userarticles/:userId',async(req,res)=>{
+	const articles = await Article.find({authorId:req.params.userId});
+	res.json(articles);
+})
 
 module.exports = router
