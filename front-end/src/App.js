@@ -5,12 +5,7 @@ import { Header } from './Components/Header';
 import { ThemeProvider } from '@emotion/react';
 import { theme } from './theme';
 import { useState, useEffect } from 'react';
-import { LatestTab } from './Components/Tabs/LatestTab';
-import { TopTab } from './Components/Tabs/TopTab';
-import { TransfersTab } from './Components/Tabs/TransfersTab';
-import { MatchesTab } from './Components/Tabs/MatchesTab';
-import { ContactUsTab } from './Components/Tabs/ContactUsTab';
-import { AboutTab } from './Components/Tabs/AboutTab';
+import { Home } from './Components/Tabs/Home';
 import { AuthContext, LoginModalContext } from './contexts';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -21,7 +16,7 @@ import { ProfilePage } from './Components/Tabs/ProfilePage';
 import { DisplayArticle } from './Components/Tabs/DisplayArticle';
 
 function App() {
-	const [loggedIn, setLoggedIn] = useState(true);
+	const [loggedIn, setLoggedIn] = useState(undefined);
 	const [openLoginModal, setOpenLoginModal] = useState(false);
 	const [avatarName, setAvatarName] = useState('');
 
@@ -54,11 +49,6 @@ function App() {
 			});
 	}, []);
 
-	const [tabSelected, settabSelected] = useState(0);
-	const tabValues = (val) => {
-		settabSelected(val);
-	};
-
 	return (
 		<>
 			<AuthContext.Provider
@@ -79,19 +69,14 @@ function App() {
 					<CssBaseline />
 					<ThemeProvider theme={theme}>
 						<Router>
-							<Header tabValues={tabValues} />
+							<Header />
 							<Routes>
 								<Route
 									path='/'
 									element={
 										<>
 											<Container>
-												{tabSelected === 0 && <LatestTab />}
-												{tabSelected === 1 && <TopTab />}
-												{tabSelected === 2 && <TransfersTab />}
-												{tabSelected === 3 && <MatchesTab />}
-												{tabSelected === 4 && <ContactUsTab />}
-												{tabSelected === 5 && <AboutTab />}
+												<Home />
 											</Container>
 											<WriteButton />
 										</>
