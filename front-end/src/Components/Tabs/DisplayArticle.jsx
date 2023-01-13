@@ -91,7 +91,8 @@ export const DisplayArticle = () => {
 							{pageData.article.title}
 						</Typography>
 					</Box>
-					<CustomCard card={{ imageLink: pageData.article.imageLink }} />
+					{/* <CustomCard card={{ imageLink: pageData.article.imageLink }} /> */}
+					<Box component={'img'} src={pageData.article.imageLink} width="100%" maxHeight="350px"></Box>
 					<Box sx={{ margin: '1rem' }}>
 						<Typography variant='body1' color='primary'>
 							{pageData.article.body}

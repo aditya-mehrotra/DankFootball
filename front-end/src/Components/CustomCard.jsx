@@ -15,7 +15,7 @@ export const CustomCard = (props)=> {
 
   return (
     <Card >
-      <CardActionArea>
+      <CardActionArea onClick={handleOpenArticle}>
         {props.card.imageLink&&<CardMedia
           component="img"
           height="140"
